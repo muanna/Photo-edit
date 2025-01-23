@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Processing App</title>
+</head>
+<body>
+  <h1>Image Processing App</h1>
+
+  <form id="uploadForm" enctype="multipart/form-data">
+    <label for="imageUpload">Upload Image(s):</label>
+    <input type="file" name="images" id="imageUpload" multiple required />
+    <br><br>
+
+    <label for="processType">Choose Process:</label>
+    <select id="processType" name="processType">
+      <option value="sharpen">Sharpen</option>
+      <option value="enhance">Enhance</option>
+    </select>
+    <br><br>
+
+    <button type="submit">Process Image</button>
+  </form>
+
+  <div id="result">
+    <h2>Processed Images</h2>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const resultDiv = document.getElementById("result");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      resultDiv.innerHTML = "Processing your images, please wait...";
+
+      try {
+        const response = await fetch("/process-images", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          resultDiv.innerHTML = `<a href="${data.zipUrl}" download>Download Enhanced and Sharpened Images</a>`;
+        } else {
+          const errorData = await response.json();
+          resultDiv.textContent = errorData.message || "An error occurred.";
+        }
+      } catch (error) {
+        resultDiv.textContent = "Failed to upload images. Please try again.";
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
