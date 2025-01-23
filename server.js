@@ -1,95 +1,4 @@
-/*const express = require('express');
-const multer = require('multer');
-const sharp = require('sharp');
-const path = require('path');
-const fs = require('fs');
 
-const app = express();
-const PORT = 5000;
-
-// Set up multer for file uploads
-const upload = multer({
-  dest: 'uploads/', // Temporary storage for uploaded files
-});
-
-// Endpoint: Health check
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "photo-enhancer.html"));
-});
-
-// Endpoint: Sharpen image
-app.post('/sharpen', upload.single('image'), async (req, res) => {
-  const filePath = req.file.path;
-  const outputFilePath = `processed/sharpened-${Date.now()}.jpg`;
-
-  try {
-    // Create 'processed' directory if it doesn't exist
-    if (!fs.existsSync('processed')) {
-      fs.mkdirSync('processed');
-    }
-
-    // Apply sharpening
-    await sharp(filePath)
-      .sharpen()
-      .toFile(outputFilePath);
-
-    // Return the processed image
-    res.download(outputFilePath, (err) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error processing the image.');
-      } else {
-        // Clean up: Remove temporary files after download completes
-        fs.unlinkSync(filePath);
-        fs.unlinkSync(outputFilePath);
-      }
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error processing the image.');
-  }
-});
-
-// Endpoint: Enhance image
-app.post('/enhance', upload.single('image'), async (req, res) => {
-  const filePath = req.file.path;
-  const outputFilePath = `processed/enhanced-${Date.now()}.jpg`;
-
-  try {
-    // Create 'processed' directory if it doesn't exist
-    if (!fs.existsSync('processed')) {
-      fs.mkdirSync('processed');
-    }
-
-    // Apply brightness and contrast enhancements
-    await sharp(filePath)
-      .modulate({
-        brightness: 1.2, // Increase brightness
-        saturation: 1.1, // Slightly increase saturation
-      })
-      .toFile(outputFilePath);
-
-    // Return the processed image
-    res.download(outputFilePath, (err) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error processing the image.');
-      } else {
-        // Clean up: Remove temporary files after download completes
-        fs.unlinkSync(filePath);
-        fs.unlinkSync(outputFilePath);
-      }
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error processing the image.');
-  }
-});
-
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});*/
 const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
@@ -132,7 +41,7 @@ const safeDeleteFile = (filePath) => {
 
 // Serve the frontend file
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "photo-enhancer.html"));
+    res.sendFile(path.join(__dirname, "/front end/photo-enhancer.html"));
 });
 
 // Image processing endpoint
